@@ -24,3 +24,7 @@ This is an Android app that monitors and displays **lifecycle events** (e.g., `o
 
 3. Run the app on an emulator or a physical Android device.   
 ---
+## Reference
+- Based on **Lecture 4, Example 2** from the CS501 course materials.  
+- [Android Developers Documentation on ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)
+- Gemini assistance on Gradle set up, library imports, and debugging.

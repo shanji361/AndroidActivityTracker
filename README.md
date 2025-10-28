@@ -11,7 +11,7 @@ This is an Android app that monitors and displays **lifecycle events** (e.g., `o
 - **Timestamps:** Each event includes the exact time it occurred.  
 - **Status Colors:** Color-coded entries for quick recognition of lifecycle states.  
 - **Live Log Display:** Smooth scrolling log built with `LazyColumn`.  
-- **Snackbar Notifications:** Optional toast-like notifications on lifecycle transitions (configurable in settings).  
+- **Snackbar Notifications:** Notifications on lifecycle transitions.
 
 ---
 ## How to Run the App

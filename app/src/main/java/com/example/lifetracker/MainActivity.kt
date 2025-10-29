@@ -25,6 +25,9 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import com.example.lifetracker.ui.theme.LifeTrackerTheme
 import kotlinx.coroutines.launch
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.foundation.clickable
 
 class MainActivity : ComponentActivity() {
 
@@ -80,6 +83,8 @@ fun LifeTrackerScreen(viewModel: MainViewModel) {
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    var showSettings by remember { mutableStateOf(false) }
+
     // show snackbar when theres new event
     LaunchedEffect(latestEvent) {
         latestEvent?.let { event ->
@@ -102,6 +107,14 @@ fun LifeTrackerScreen(viewModel: MainViewModel) {
         topBar = {
             TopAppBar(
                 title = { Text("LifeTracker") },
+                actions = {
+                    IconButton(onClick = { showSettings = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Settings,
+                            contentDescription = "Settings"
+                        )
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -126,14 +139,7 @@ fun LifeTrackerScreen(viewModel: MainViewModel) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Switch(
-                        checked = showSnackbar,
-                        onCheckedChange = { viewModel.toggleSnackbarSetting() }
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Show Snackbar", fontSize = 14.sp)
-                }
+
 
                 Button(
                     onClick = { viewModel.clearLogs() },
@@ -200,6 +206,59 @@ fun LifeTrackerScreen(viewModel: MainViewModel) {
                     }
                 }
             }
+        }
+        if (showSettings) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(alpha = 0.4f))
+                    .clickable { showSettings = false },
+                contentAlignment = Alignment.Center
+            ) {
+                Card(
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = CardDefaults.cardElevation(8.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
+                        .wrapContentHeight()
+                        .clickable(enabled = false) {}
+                ) {
+                    Column(
+                        modifier = Modifier.padding(20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Settings",
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text("Show Snackbar", fontSize = 16.sp)
+                            Switch(
+                                checked = showSnackbar,
+                                onCheckedChange = { viewModel.toggleSnackbarSetting() }
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        Button(onClick = { showSettings = false }) {
+                            Text("Close")
+                        }
+                    }
+                }
+            }
+
         }
     }
 }
